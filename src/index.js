@@ -13,9 +13,13 @@ import RegistrationForm from './components/RegistrationForm';
 import RegistrationFormState from './components/RegistrationFormState';
 import ProductCounter from './components/ProductCounter';
 import ProductCounterWithReducer from './components/ProductCounterWithReducer';
+import { Provider } from 'react-redux';
+import store from './components/ReduxCounter/store';
+import ProductCounterWithRedux from './components/ReduxCounter';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Provider store={store}>
   <div>
     {/* <HelloWorld/>
     <HelloWorld/>
@@ -29,8 +33,9 @@ root.render(
     {/* <ToDoList/>  */}
     {/* <RegistrationFormState/> */}
     {/* <ProductCounter/> */}
-    <ProductCounterWithReducer/>
+    <ProductCounterWithRedux/>
   </div>
+  </Provider>
 );
 
 
