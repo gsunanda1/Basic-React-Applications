@@ -1,31 +1,75 @@
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-const ToDoList=()=>{
-    const [list,setlist]=(['Item 1','Item 2','Item 3','Item 4']);
-    const [item,setNewItem]=useState('');
-    const addItem=(e)=>{
-        setNewItem(e.target.value);
+const TodoList = () => {
+    const defaultList = [...Array(10)].map((item,idx)=>({title: `Item ${idx}`, id: idx+1, completed: false}));
+    const [list, setList] = useState(defaultList);
+    const [newItem, setNewItem] = useState('');
+
+    // useMemo is used to cache the result of calculation between rerenders
+    const completedCount = useMemo(
+        ()=>
+        list.filter((item)=> {
+            console.log('completed count');
+            return item.completed;
+        }).length,
+        [list]
+    );
+
+    const pendingCount = useMemo(
+        ()=>
+        list.filter((item)=> {
+            console.log('Pending count');
+            return !item.completed;
+        }).length,
+        [list]
+    );
+
+    // Here handleNewItemChange is redeclaring again & again inside ToDoList function
+    const handleNewItemChange = useCallback((e) => {
+        // console.log(e.target.value);
+        //console.log('Before > ', newItem);
+        setNewItem(e.target.value); // async update
+        //console.log('After > ', newItem);
+    },[]);
+
+    useEffect(()=>{
+        console.log('Rerender');
+    });
+
+    const handleButtonClick = (e) => {
+        // I want to know the value inside input text box
+        // console.log(newItem);
+        // add the new item in list
+        setNewItem('');
+        const newList = [{
+            title: newItem,
+            id: Math.random()
+        }, ...list];
+        setList(newList);
+        
     }
-    const pushToList=()=>{
-        // I want to add value inside textbox to list
-        console.log(item);
-        //list.push(item); - this doesnt work as it is not a state.
-        setNewItem(''); // clear the textbox
-        const newList=[...list,item]; // create copy and add existing and new item
-        setlist(newList);
-    }
-    return(
-        <div>
-            <input type="text" placeholder="Add Item" value={item} onChange={addItem}/>
-            <button onClick={pushToList}>Add</button>
+
+    return (
+        <div className="todoWrapper">
+            <h2>Todo List</h2>
+            <div>
+                <span>Completed:{completedCount}</span>
+                <span>Pending:{pendingCount}</span>
+            </div>
+            <div>
+                <input type="text" placeholder="Add Item" value={newItem} onChange={handleNewItemChange} />
+                <button onClick={handleButtonClick}>Add</button>
+            </div>
             <ul>
-               {
-                    list.map((item) => {
-                        return(<li>{item}</li>);
-                    })
-               }
+                {
+                    list.map(item => {
+                        return (<li key={item.id} className={item.completed ? 'completed' : ''}>{item.title}</li>);
+                    })   
+                }
+                {/* {renderList()} */}
             </ul>
         </div>
     )
 }
-export default ToDoList;
+
+export default TodoList;

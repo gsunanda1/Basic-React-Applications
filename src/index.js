@@ -11,6 +11,8 @@ import { RandomName } from './components/RandomName';
 import ToDoList from './components/ToDoList';
 import RegistrationForm from './components/RegistrationForm';
 import RegistrationFormState from './components/RegistrationFormState';
+import ProductCounter from './components/ProductCounter';
+import ProductCounterWithReducer from './components/ProductCounterWithReducer';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,9 +25,11 @@ root.render(
     {/* <Counter CounterName={'Rohan'}/>
     <Counter CounterName={'Siva'}/>
     <Counter CounterName={'Abhi'}/>
-    <RandomName/>
-    <ToDoList/> */}
-    <RegistrationFormState/>
+  <RandomName/>*/}
+    {/* <ToDoList/>  */}
+    {/* <RegistrationFormState/> */}
+    {/* <ProductCounter/> */}
+    <ProductCounterWithReducer/>
   </div>
 );
 
